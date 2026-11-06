@@ -83,6 +83,13 @@
         </div>
       </div>
       <div>
+        <label class="lbl" data-i18n="mouseColor"></label>
+        <div class="seg" id="mouseColor">
+          <button data-v="mono" class="on" data-i18n="mono"></button>
+          <button data-v="blue" data-i18n="blue"></button>
+        </div>
+      </div>
+      <div>
         <label class="lbl" for="size"><span data-i18n="size"></span>: <span id="sizeV">48</span> px</label>
         <input id="size" type="range" min="24" max="120" value="48">
       </div>
@@ -111,11 +118,11 @@
 (function(){
   const $ = id => document.getElementById(id);
   const q = $('q'), out = $('out'), statusEl = $('status');
-  const state = { style:'light', font:'sans' };
+  const state = { style:'light', font:'sans', mouse:'mono' };
   const I18N = {
     th:{
       sub:'พิมพ์ปุ่มที่อยากได้ แล้วกด Copy เพื่อนำรูปไปวางใน Canva, Slides หรือที่ไหนก็ได้',
-      keys:'ปุ่มที่ต้องการ', style:'สไตล์', font:'ฟอนต์', size:'ขนาด', options:'ตัวเลือก',
+      keys:'ปุ่มที่ต้องการ', mouseColor:'สีคลิกเมาส์', mono:'ขาวดำ', blue:'น้ำเงิน', style:'สไตล์', font:'ฟอนต์', size:'ขนาด', options:'ตัวเลือก',
       mac:'ใช้สัญลักษณ์ Mac (⌘ ⌥ ⇧)', plus:'แสดงเครื่องหมาย +', transparent:'พื้นหลังโปร่งใส',
       copy:'Copy รูป', download:'ดาวน์โหลด PNG',
       copied:'คัดลอกรูปแล้ว ✓ ไปกด Ctrl + V ใน Canva ได้เลย',
@@ -129,7 +136,7 @@
     },
     en:{
       sub:'Type the keys you want, then hit Copy and paste the image into Canva, Slides or anywhere else.',
-      keys:'Keys', style:'Style', font:'Font', size:'Size', options:'Options',
+      keys:'Keys', mouseColor:'Mouse click color', mono:'Black & white', blue:'Blue', style:'Style', font:'Font', size:'Size', options:'Options',
       mac:'Use Mac symbols (⌘ ⌥ ⇧)', plus:'Show + signs', transparent:'Transparent background',
       copy:'Copy image', download:'Download PNG',
       copied:'Copied ✓ Now press Ctrl + V in Canva',
@@ -181,7 +188,7 @@
       };
     });
   }
-  seg('style','style'); seg('font','font');
+  seg('style','style'); seg('font','font'); seg('mouseColor','mouse');
   ['mac','plus','transparent'].forEach(id=>$(id).onchange=render);
   $('size').oninput=()=>{ $('sizeV').textContent=$('size').value; render(); };
   q.oninput=render;
@@ -248,7 +255,7 @@
 
   function drawMouse(ctx,x,y,w,h,which,t,lw){
     const r = w*0.48, split = y + h*0.42, cx = x + w/2;
-    const accent = state.style==='dark' ? '#6b9bff' : (state.style==='outline' ? t.border : '#2f6fed');
+    const accent = state.mouse==='mono' ? t.text : (state.style==='dark' ? '#6b9bff' : '#2f6fed');
     // body
     rr(ctx,x,y,w,h,r);
     ctx.fillStyle = t.face || 'rgba(0,0,0,0)'; if (t.face) ctx.fill();
